@@ -1,0 +1,283 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:yt_downloader.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="yt_downloader.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+		MinWidth="500"
+		MinHeight="500"
+        ExtendClientAreaToDecorationsHint="True"
+		Title="yt_downloader">
+
+    <!--<Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>-->
+	<Grid>
+		<!--<Border IsHitTestVisible="False">
+			<Border.Background>
+				<LinearGradientBrush Opacity="0.6" StartPoint="0%,0%" EndPoint="0%,100%">
+					<LinearGradientBrush.GradientStops>
+						<GradientStop Offset="0.5" Color="#000"/>
+						<GradientStop Offset="0.8" Color="#113CFC"/>
+						<GradientStop Offset="1" Color="#1597E5"/>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Border.Background>
+		</Border>-->
+
+
+		<Grid
+			Margin="50"
+			RowDefinitions="40, *, Auto">
+
+			<!--search bar-->
+			<DockPanel
+				LastChildFill="True">
+				<Button
+					DockPanel.Dock="Right"
+					VerticalAlignment="Stretch"
+					Margin="8, 0, 0, 0"
+					Command="{Binding Search}">
+
+					<DrawingPresenter
+						Drawing="{DynamicResource BoxIcons.SolidSearch}"/>
+
+				</Button>
+				<TextBox
+					VerticalContentAlignment="Center"
+					Text="{Binding searchText}"/>
+			</DockPanel>
+
+			<Grid
+				Margin="20"
+				Grid.Row="1"
+				MaxHeight="300"
+				ColumnDefinitions="*, *">
+				<!--thumbanil-->
+				<Border
+					ClipToBounds="True"
+					CornerRadius="15"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+
+					<Image Source="{Binding thumbnailUrl, Converter={StaticResource variableImage}}"/>
+				</Border>
+				<!--video info-->
+
+				<StackPanel
+					Grid.Column="1"
+					Margin="30, 0, 0, 0"
+					VerticalAlignment="Center"
+					Spacing="5">
+
+					<TextBlock
+						Text="Title"/>
+					<TextBlock
+						Opacity="0.6"
+						Text="{Binding videoTitle}"/>
+
+					<Separator
+						Opacity="0"
+						Height="12"/>
+
+					<TextBlock
+						Text="Arthur"/>
+					<TextBlock
+						Opacity="0.6"
+						Text="{Binding videoArthur}"/>
+
+					<Separator
+						Opacity="0"
+						Height="12"/>
+
+					<TextBlock
+						Text="Duration"/>
+					<TextBlock
+						Opacity="0.6"
+						Text="{Binding videoDuration}"/>
+
+				</StackPanel>
+			</Grid>
+			<!--download button-->
+			<Button
+				Grid.Row="2"
+				IsVisible="{Binding infoVisible}"
+				Command="{Binding OpenDownloadPopup}"
+				HorizontalAlignment="Center">
+
+				<DockPanel LastChildFill="True">
+					<Label
+						DockPanel.Dock="Right"
+						Content="  Download"/>
+					<DrawingPresenter
+						Drawing="{DynamicResource BoxIcons.RegularDownload}"/>
+				</DockPanel>
+			</Button>
+			<Button
+				Grid.Row="2"
+				Background="Transparent"
+				Command="{Binding About}"
+				Content="about"/>
+			<!--download popup-->
+			<Grid
+				Grid.RowSpan="3"
+				Classes.open="{Binding downloadPopupOpen}"
+				IsVisible="{Binding downloadPopupOpen}">
+
+				<!--<Rectangle
+					Opacity="0.8"
+					Fill="Black"/>-->
+
+				<Grid
+					Classes.openScale="{Binding downloadPopupOpen}"
+					Width="300"
+					Height="300">
+
+					<Border
+						BorderBrush="#40AED3"
+						BorderThickness="2"
+						CornerRadius="10"
+						Background="Black"/>
+
+					<Grid RowDefinitions="*, Auto">
+						<ScrollViewer Margin="20">
+							<StackPanel
+							Spacing="5">
+
+								<StackPanel.Styles>
+									<Style Selector="Button">
+										<Setter
+											Property="CornerRadius"
+											Value="0"/>
+									</Style>
+								</StackPanel.Styles>
+
+								<Label
+									FontWeight="Bold"
+									FontSize="20"
+									Content="Select a format"/>
+
+								<Label Content="Audio"/>
+
+								<Button
+									HorizontalAlignment="Stretch"
+									Content="Mp3 (Highest quality)"
+									Command="{Binding Download}"
+									CommandParameter="mp3 *"/>
+
+								<Label Content="Video (No audio)"/>
+
+								<Button
+									HorizontalAlignment="Stretch"
+									Content="Mp4 240p"
+									Command="{Binding Download}"
+									CommandParameter="mp4 240p"/>
+								<Button
+									HorizontalAlignment="Stretch"
+									Content="Mp4 360p"
+									Command="{Binding Download}"
+									CommandParameter="mp4 360p"/>
+
+								<Button
+									HorizontalAlignment="Stretch"
+									Content="Mp4 480p"
+									Command="{Binding Download}"
+									CommandParameter="mp4 480p"/>
+
+								<Button
+									HorizontalAlignment="Stretch"
+									Content="Mp4 720p"
+									Command="{Binding Download}"
+									CommandParameter="mp4 720p"/>
+							</StackPanel>
+						</ScrollViewer>
+						<Button
+							Grid.Row="1"
+							Background="Transparent"
+							HorizontalAlignment="Center"
+							Command="{Binding Cancel}"
+							Content="Cancel"/>
+					</Grid>
+				</Grid>
+			</Grid>
+			<!--loading popup-->
+			<Grid
+				Grid.RowSpan="3"
+				Classes.open="{Binding loadingPopupOpen}"
+				IsVisible="{Binding loadingPopupOpen}">
+
+				<!--<Rectangle
+					Opacity="0.8"
+					Fill="Black"/>-->
+
+				<Grid
+					Classes.openScale="{Binding loadingPopupOpen}"
+					Width="300"
+					Height="120">
+
+					<Border
+						BorderBrush="#40AED3"
+						BorderThickness="2"
+						CornerRadius="10"
+						Background="Black"/>
+					<Grid
+						Margin="20"
+						RowDefinitions="*, Auto, 20, Auto">
+						<TextBlock
+							FontWeight="Bold"
+							FontSize="20"
+							Text="Loading"/>
+						<TextBlock
+							Grid.Row="1"
+							Text="{Binding loadingPopupText}"/>
+						<ProgressBar
+							Grid.Row="3"
+							IsIndeterminate="True"/>
+					</Grid>
+
+				</Grid>
+			</Grid>
+			<!--error popup-->
+			<Grid
+				Grid.RowSpan="3"
+				Classes.open="{Binding errorPopupOpen}"
+				IsVisible="{Binding errorPopupOpen}">
+
+				<!--<Rectangle
+					Opacity="0.8"
+					Fill="Black"/>-->
+
+				<Grid
+					Classes.openScale="{Binding errorPopupOpen}"
+					Width="300"
+					Height="200">
+
+					<Border
+						BorderBrush="#FA8352"
+						BorderThickness="2"
+						CornerRadius="10"
+						Background="Black"/>
+					<Grid
+						Margin="20"
+						RowDefinitions="*, *, Auto">
+						<TextBlock
+							FontWeight="Bold"
+							FontSize="20"
+							Text="Error"/>
+						<TextBlock
+							Grid.Row="1"
+							Text="{Binding errorPopupText}"/>
+						<Button
+							Grid.Row="2"
+							HorizontalAlignment="Stretch"
+							HorizontalContentAlignment="Center"
+							Command="{Binding ErrorOk}"
+							Content="OK"/>
+					</Grid>
+				</Grid>
+			</Grid>
+		</Grid>
+	</Grid>
+</Window>

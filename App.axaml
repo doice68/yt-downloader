@@ -1,0 +1,39 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:yt_downloader"
+             xmlns:ext="using:yt_downloader.Converters"
+			 x:Class="yt_downloader.App">
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+		<Style Selector="DrawingPresenter">
+			<Setter
+				Property="Width"
+				Value="16"/>
+			<Setter
+				Property="Height"
+				Value="16"/>	
+		</Style>
+		<Style Selector="Separator">
+			<Setter
+				Property="Background"
+				Value="White"/>
+			<Setter
+				Property="Height"
+				Value="1"/>
+		</Style>
+		
+        <FluentTheme Mode="Dark"/>
+		<StyleInclude Source="/Styles/Popups.axaml"/>
+		<StyleInclude Source="/Styles/Icons.axaml"/>
+    </Application.Styles>
+
+	<Application.Resources>
+		<CornerRadius x:Key="ControlCornerRadius">15</CornerRadius>
+		<CornerRadius x:Key="OverlayCornerRadius">0</CornerRadius>
+		<Thickness x:Key="ButtonPadding">13,10</Thickness>
+		<ext:BitmapAssetValueConverter x:Key="variableImage"/>
+	</Application.Resources>
+</Application>
